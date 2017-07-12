@@ -1,0 +1,6 @@
+1. GetTWStocks.java, needs to change the starting/ending date
+2. DataPreprocessing.java
+3. PriceToReturn.java
+4. TodayAR.java
+5. GetRealizedReturns.java
+6. GenerateFlags.java

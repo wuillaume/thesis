@@ -1,0 +1,79 @@
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+/*
+* This program is for downloading Yahoo Industry Browser's data
+ */
+public class GetTWStocks{
+    
+    // main program
+    public static void main(String[] args) {
+       String inputFile = "StockList.txt"; 
+       String address = "";    
+       String localAdd = "";
+       String tmpLine ="";     
+       
+       try {
+        
+         BufferedReader input =  new BufferedReader(new FileReader(inputFile));          
+         tmpLine = null;    
+         while (( tmpLine = input.readLine()) != null){              
+              //address = "http://ichart.finance.yahoo.com/table.csv?s="+tmpLine+".TW&a=00&b=01&c=2003&d=03&e=28&f=2009&g=d&ignore=.csv";
+              //address = "http://ichart.finance.yahoo.com/table.csv?s="+tmpLine+"&a=00&b=01&c=2011&d=04&e=18&f=2009&g=d&ignore=.csv";
+              address = "http://ichart.finance.yahoo.com/table.csv?s="+1110+".TW&a=03&b=5&c=2010&d=27&e=10&f=2010&g=d&ignore=.csv";
+              localAdd = ".\\data\\"+tmpLine+".csv";
+                  download(address, localAdd);                
+                  Thread.sleep(1500);
+         }           
+         input.close();
+        }catch (Exception e){
+                            e.printStackTrace();
+                            
+        }   
+    }   
+
+
+/*************************************************************
+// function: connect to an URL and save it as a local file
+***************************************************************/
+    public static void download(String address, String localFileName) {
+        OutputStream out = null;
+        URLConnection conn = null;
+        InputStream  in = null;
+        try {
+            URL url = new URL(address);
+            out = new BufferedOutputStream(
+                new FileOutputStream(localFileName));
+            conn = url.openConnection();
+            in = conn.getInputStream();
+            byte[] buffer = new byte[1024];
+            int numRead;
+            long numWritten = 0;
+            while ((numRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, numRead);
+                numWritten += numRead;
+            }
+            System.out.println(localFileName + "\t" + numWritten);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ioe) {
+            }
+        }
+}// end of function
+
+
+
+}
